@@ -4,8 +4,7 @@ import PropTypes from 'prop-types'
 import { secToMin } from '../utils'
 
 const Countdown = (props) => {
-  const timeRemaining = secToMin(props.timeRemaining)
-
+  const timeRemaining = secToMin(Math.floor(props.timeRemaining / 1000))
   return (
     <Text style={[styles.text, props.style]}>{timeRemaining}</Text>
   )

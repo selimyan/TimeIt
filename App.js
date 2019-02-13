@@ -1,19 +1,36 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import Countdown from './components/Countdown'
-import vibrate from './utils/vibrate'
+import { vibrate, Timer } from './utils'
+
+const nextTimer = { work: 'break', break: 'work' }
 
 export default class App extends React.Component {
   state = {
     workTime: 1800,
     breakTime: 300,
-    timeRemaining: 1800,
+    timeRemaining: 1800 * 1000,
     isRunning: false,
     activeTimer: 'work'
   }
 
   componentDidMount() {
+    this.timer = new Timer(this.state.timeRemaining, this.updateTimeRemaining, this.handleTimerEnd)
+    this.setState({ isRunning: this.timer.isRunning })
+  }
+
+  componentWillUnmount() {
+    if (this.timer) this.timer.stop()
+  }
+
+  updateTimeRemaining = (timeRemaining) => {
+    this.setState({ timeRemaining })
+  }
+
+  handleTimerEnd = () => {
     vibrate()
+    this.setState((prevState) => (
+      { activeTimer: nextTimer[prevState.activeTimer] }), this.resetTimer)
   }
 
   render() {
