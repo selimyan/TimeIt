@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import Countdown from './components/Countdown'
 import vibrate from './utils/vibrate'
 
 export default class App extends React.Component {
@@ -20,7 +21,7 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={[styles.title, styles.center]}>{activeTimer} TIME</Text>
-        <Text style={styles.center}>Countdown Placeholder</Text>
+        <Countdown style={styles.center} timeRemaining={timeRemaining} />
         <View style={[styles.buttonGroup, styles.center]}>
           <Text>Start/Pause</Text>
           <Text>Reset</Text>
