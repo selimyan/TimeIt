@@ -19,7 +19,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.timer = new Timer(this.state.timeRemaining, this.updateTimeRemaining, this.handleTimerEnd)
-    this.setState({ isRunning: this.timer.isRunning })
   }
 
   componentWillUnmount() {
@@ -36,13 +35,20 @@ export default class App extends React.Component {
       const timeRemaining = +time * 1000
       this.timer = new Timer(timeRemaining, this.updateTimeRemaining, this.handleTimerEnd)
       if (!shouldStartTimer) this.timer.stop()
-      this.setState({ [`${target}Time`]: time, timeRemaining, isRunning: this.timer.isRunning })
+      this.setState({
+        [`${target}Time`]: time,
+        timeRemaining,
+        isRunning: this.timer.isRunning
+      })
     } else {
-      this.setState({ [`${target}Time`]: time, isRunning: this.timer.isRunning })
+      this.setState({
+        [`${target}Time`]: time,
+        isRunning: this.timer.isRunning
+      })
     }
   }
 
-  resetTimer = shouldStopTimer => {
+  resetTimer = (shouldStopTimer) => {
     const { activeTimer } = this.state
     this.updateTime(activeTimer)(this.state[`${activeTimer}Time`], !shouldStopTimer)
   }
@@ -55,7 +61,10 @@ export default class App extends React.Component {
 
   toggleTimer = () => {
     if (!this.timer) return
-    if (this.timer.isRunning) this.timer.stop()
+    if (this.timer.isRunning) {
+      console.log('noooo')
+      this.timer.stop()
+    }
     else this.timer.start()
 
     this.setState({ isRunning: this.timer.isRunning })
@@ -63,11 +72,13 @@ export default class App extends React.Component {
 
   render() {
     const { workTime, breakTime, timeRemaining, isRunning, activeTimer } = this.state
+    const { container, title, center, buttonGroup } = styles
+
     return (
-      <View style={styles.container}>
-        <Text style={[styles.title, styles.center]}>{activeTimer} TIME</Text>
-        <Countdown style={styles.center} timeRemaining={timeRemaining} />
-        <View style={[styles.buttonGroup, styles.center]}>
+      <View style={container}>
+        <Text style={[title, center]}>{activeTimer} TIME</Text>
+        <Countdown style={center} timeRemaining={timeRemaining} />
+        <View style={[buttonGroup, center]}>
           <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
           <Button title='Reset' onPress={this.resetTimer} />
         </View>

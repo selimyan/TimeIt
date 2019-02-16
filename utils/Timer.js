@@ -4,15 +4,11 @@ export default class Timer {
     this.onTick = onTick
     this.onEnd = onEnd
     this.endTime = Date.now() + duration
-    this.tick()
+    this.isRunning = false
   }
 
   get timeRemaining() {
     return this.endTime - Date.now()
-  }
-
-  get isRunning() {
-    return !!this.endTime
   }
 
   clearTick = () => {
@@ -24,9 +20,10 @@ export default class Timer {
     if (this.endTime < Date.now()) {
       this.onTick(0)
       this.onEnd()
+      this.isRunning = false
     } else {
       this.onTick(this.timeRemaining)
-
+      this.isRunning = true
       // account for delays
       const nextTick = this.timeRemaining % 1000
 
@@ -39,11 +36,13 @@ export default class Timer {
     this.clearTick()
     this.duration = this.timeRemaining
     this.endTime = null
+    this.isRunning = false
   }
 
   start = () => {
     if (this.isRunning) return
     this.endTime = Date.now() + this.duration
+    this.isRunning = true
     this.tick()
   }
 }
