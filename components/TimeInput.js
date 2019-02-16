@@ -67,3 +67,8 @@ const styles = StyleSheet.create({
     minWidth: 50,
   }
 })
+
+TimeInput.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  time: PropTypes.number,
+}
