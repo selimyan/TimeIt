@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
-import { Countdown, TimerToggleButton } from './components'
+import { Countdown, TimerToggleButton, TimeInput } from './components'
 import { vibrate, Timer } from './utils'
 
 const DEFAULT_WORK_MINS = 30
@@ -31,7 +31,6 @@ export default class App extends React.Component {
   }
 
   updateTime = (target) => (time, shouldStartTimer) => {
-    console.log('--------------', this.state.activeTimer, target, time, shouldStartTimer)
     if (this.state.activeTimer === target) {
       if (this.timer) this.timer.stop()
       const timeRemaining = +time * 1000
@@ -72,8 +71,16 @@ export default class App extends React.Component {
           <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
           <Button title='Reset' onPress={this.resetTimer} />
         </View>
-        <Text style={styles.center}>Work</Text>
-        <Text style={styles.center}>Break</Text>
+        <TimeInput
+          title='Work Time:'
+          onChange={this.updateTime('work')}
+          time={workTime}
+        />
+        <TimeInput
+          title='Break Time:'
+          onChange={this.updateTime('break')}
+          time={breakTime}
+        />
       </View>
     )
   }
