@@ -1,10 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Button, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { Countdown, TimerToggleButton, TimeInput } from './components'
 import { vibrate, Timer } from './utils'
 
-const DEFAULT_WORK_MINS = 30
-const DEFAULT_BREAK_MINS = 5
+const DEFAULT_WORK_MINS = 0.2
+const DEFAULT_BREAK_MINS = 0.1
 
 const nextTimer = { work: 'break', break: 'work' }
 
@@ -61,10 +61,7 @@ export default class App extends React.Component {
 
   toggleTimer = () => {
     if (!this.timer) return
-    if (this.timer.isRunning) {
-      console.log('noooo')
-      this.timer.stop()
-    }
+    if (this.timer.isRunning) this.timer.stop()
     else this.timer.start()
 
     this.setState({ isRunning: this.timer.isRunning })
@@ -74,25 +71,29 @@ export default class App extends React.Component {
     const { workTime, breakTime, timeRemaining, isRunning, activeTimer } = this.state
     const { container, title, center, buttonGroup } = styles
 
+    let bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
+
     return (
-      <View style={container}>
-        <Text style={[title, center]}>{activeTimer} TIME</Text>
-        <Countdown style={center} timeRemaining={timeRemaining} />
-        <View style={[buttonGroup, center]}>
-          <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
-          <Button title='Reset' onPress={this.resetTimer} />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={{ ...container, backgroundColor: bgColor }}>
+          <Text style={[title, center]}>{activeTimer} TIME</Text>
+          <Countdown style={center} timeRemaining={timeRemaining} />
+          <TimeInput
+            title='Work Time:'
+            onChange={this.updateTime('work')}
+            time={workTime}
+          />
+          <TimeInput
+            title='Break Time:'
+            onChange={this.updateTime('break')}
+            time={breakTime}
+          />
+          <View style={[buttonGroup, center]}>
+            <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
+            <Button title='Reset' onPress={this.resetTimer} />
+          </View>
         </View>
-        <TimeInput
-          title='Work Time:'
-          onChange={this.updateTime('work')}
-          time={workTime}
-        />
-        <TimeInput
-          title='Break Time:'
-          onChange={this.updateTime('break')}
-          time={breakTime}
-        />
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
@@ -100,7 +101,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'stretch',
     paddingTop: 150,
   },

@@ -3,6 +3,11 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import PropTypes from 'prop-types'
 
 export default class TimeInput extends React.Component {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    time: PropTypes.number,
+  }
+
   state = {
     mins: Math.floor(this.props.time / 60),
     secs: this.props.time % 60
@@ -67,8 +72,3 @@ const styles = StyleSheet.create({
     minWidth: 50,
   }
 })
-
-TimeInput.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  time: PropTypes.number,
-}
