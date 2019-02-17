@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button } from 'react-native'
 import PropTypes from 'prop-types'
+import TimerButton from './TimerButton'
 
-const TimerToggleButton = (props) => {
-  const title = props.isRunning ? 'Pause' : 'Start'
+const TimerToggleButton = ({ isRunning, onToggle }) => {
+  const name = isRunning ? 'md-pause' : 'md-play'
   return (
-    <Button title={title} onPress={props.onToggle} />
+    <TimerButton name={name} handlePress={onToggle} />
   )
 }
 

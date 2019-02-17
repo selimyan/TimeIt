@@ -26,22 +26,23 @@ export default class TimeInput extends React.Component {
   render() {
     const { title } = this.props
     const { mins, secs } = this.state
+    const { container, bold, controls, input } = styles
 
     return (
-      <View style={styles.container}>
-        {title && <Text style={styles.bold}>{title}</Text>}
-        <View style={styles.controls}>
+      <View style={container}>
+        {title && <Text style={bold}>{title}</Text>}
+        <View style={controls}>
           <Text>Mins: </Text>
           <TextInput
             defaultValue={`${mins}`}
-            style={styles.input}
+            style={input}
             keyboardType='numeric'
             onChangeText={this.handleMinChange}
           />
           <Text>Secs: </Text>
           <TextInput
             defaultValue={`${secs}`}
-            style={styles.input}
+            style={input}
             keyboardType='numeric'
             onChangeText={this.handleSecChange}
           />
@@ -69,6 +70,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     marginRight: 10,
     paddingHorizontal: 5,
-    minWidth: 50,
+    minWidth: 30,
   }
 })

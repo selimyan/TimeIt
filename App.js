@@ -1,17 +1,18 @@
 import React from 'react'
-import { StyleSheet, Text, View, Button, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { Countdown, TimerToggleButton, TimeInput } from './components'
+import { StyleSheet, Text, View, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native'
+import { Countdown, TimerToggleButton, TimeInput, TimerButton } from './components'
 import { vibrate, Timer } from './utils'
 
-const DEFAULT_WORK_MINS = 0.2
-const DEFAULT_BREAK_MINS = 0.1
+const DEFAULT_WORK_MINS = 0.18
+const DEFAULT_BREAK_MINS = 0.09
+const { width } = Dimensions.get('window')
 
 const nextTimer = { work: 'break', break: 'work' }
 
 export default class App extends React.Component {
   state = {
-    workTime: DEFAULT_WORK_MINS * 60,
-    breakTime: DEFAULT_BREAK_MINS * 60,
+    workTime: Math.floor(DEFAULT_WORK_MINS * 60),
+    breakTime: Math.floor(DEFAULT_BREAK_MINS * 60),
     timeRemaining: DEFAULT_WORK_MINS * 60 * 1000,
     isRunning: false,
     activeTimer: 'work'
@@ -69,15 +70,15 @@ export default class App extends React.Component {
 
   render() {
     const { workTime, breakTime, timeRemaining, isRunning, activeTimer } = this.state
-    const { container, title, center, buttonGroup } = styles
+    const { container, title, center, buttonGroup, greyText } = styles
 
     let bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ ...container, backgroundColor: bgColor }}>
-          <Text style={[title, center]}>{activeTimer} TIME</Text>
-          <Countdown style={center} timeRemaining={timeRemaining} />
+          <Text style={[title, center, greyText]}>{activeTimer} TIME</Text>
+          <Countdown style={[center, greyText]} timeRemaining={timeRemaining} />
           <TimeInput
             title='Work Time:'
             onChange={this.updateTime('work')}
@@ -88,9 +89,9 @@ export default class App extends React.Component {
             onChange={this.updateTime('break')}
             time={breakTime}
           />
-          <View style={[buttonGroup, center]}>
+          <View style={[buttonGroup, greyText]}>
             <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
-            <Button title='Reset' onPress={this.resetTimer} />
+            <TimerButton name='ios-repeat' handlePress={this.resetTimer} />
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -107,8 +108,15 @@ const styles = StyleSheet.create({
   center: {
     alignSelf: 'center',
   },
+  greyText: {
+    color: '#363636'
+  },
   buttonGroup: {
+    width: width,
+    marginTop: 50,
+    paddingHorizontal: 40,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   title: {
     fontWeight: 'bold',
