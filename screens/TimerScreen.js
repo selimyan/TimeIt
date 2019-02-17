@@ -1,13 +1,9 @@
 import React from 'react'
 import { StyleSheet, View, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import { Countdown, TimerToggleButton, TimeInput, TimerButton } from '../components'
-import { vibrate, Timer } from '../utils'
+import { vibrate, Timer, constants } from '../utils'
 
-const DEFAULT_WORK_MINS = 0.18
-const DEFAULT_BREAK_MINS = 0.09
-const { width } = Dimensions.get('window')
-
-const nextTimer = { work: 'break', break: 'work' }
+const { DEFAULT_BREAK_SECS, DEFAULT_WORK_SECS, WIDTH, NEXT_TIMER } = constants
 
 export default class TimerScreen extends React.Component {
   static navigationOptions = {
@@ -15,9 +11,9 @@ export default class TimerScreen extends React.Component {
   }
 
   state = {
-    workTime: Math.floor(DEFAULT_WORK_MINS * 60),
-    breakTime: Math.floor(DEFAULT_BREAK_MINS * 60),
-    timeRemaining: DEFAULT_WORK_MINS * 60 * 1000,
+    workTime: DEFAULT_WORK_SECS,
+    breakTime: DEFAULT_BREAK_SECS,
+    timeRemaining: DEFAULT_WORK_SECS * 1000,
     isRunning: false,
     activeTimer: 'work'
   }
@@ -61,7 +57,7 @@ export default class TimerScreen extends React.Component {
   handleTimerEnd = () => {
     vibrate()
     this.setState((prevState) => (
-      { activeTimer: nextTimer[prevState.activeTimer] }), this.resetTimer)
+      { activeTimer: NEXT_TIMER[prevState.activeTimer] }), this.resetTimer)
   }
 
   toggleTimer = () => {
@@ -74,7 +70,7 @@ export default class TimerScreen extends React.Component {
 
   render() {
     const { workTime, breakTime, isRunning, activeTimer } = this.state
-    const { container, title, center, buttonGroup, greyText } = styles
+    const { container, center, buttonGroup, greyText } = styles
 
     const bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
     const totalTime = activeTimer === 'work' ? workTime : breakTime
@@ -123,7 +119,7 @@ const styles = StyleSheet.create({
     color: '#363636'
   },
   buttonGroup: {
-    width: width,
+    width: WIDTH,
     marginTop: 50,
     paddingHorizontal: 40,
     flexDirection: 'row',
