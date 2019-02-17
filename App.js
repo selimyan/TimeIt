@@ -69,16 +69,23 @@ export default class App extends React.Component {
   }
 
   render() {
-    const { workTime, breakTime, timeRemaining, isRunning, activeTimer } = this.state
+    const { workTime, breakTime, isRunning, activeTimer } = this.state
     const { container, title, center, buttonGroup, greyText } = styles
 
-    let bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
+    const bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
+    const totalTime = activeTimer === 'work' ? workTime : breakTime
+    const timeRemaining = Math.floor(this.state.timeRemaining / 1000)
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ ...container, backgroundColor: bgColor }}>
-          <Text style={[title, center, greyText]}>{activeTimer} TIME</Text>
-          <Countdown style={[center, greyText]} timeRemaining={timeRemaining} />
+          <Countdown
+            style={[center, greyText]}
+            timeRemaining={timeRemaining}
+            totalTime={totalTime}
+            bgColor={bgColor}
+            activeTimer={activeTimer}
+          />
           <TimeInput
             title='Work Time:'
             onChange={this.updateTime('work')}
@@ -102,7 +109,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch',
+    alignItems: 'center',
     paddingTop: 150,
   },
   center: {
@@ -117,10 +124,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  title: {
-    fontWeight: 'bold',
-    fontSize: 48,
-    textTransform: 'uppercase',
   },
 })
