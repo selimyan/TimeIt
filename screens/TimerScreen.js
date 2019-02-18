@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Countdown, TimerToggleButton, TimerButton, SettingsButton } from '../components'
 import { vibrate, Timer, constants } from '../utils'
 
@@ -37,13 +37,13 @@ export default class TimerScreen extends React.Component {
       this.timer = new Timer(timeRemaining, this.updateTimeRemaining, this.handleTimerEnd)
       if (!shouldStartTimer) this.timer.stop()
       this.setState({
-        [`${target}Time`]: time,
+        [`${target}Time`]: +time,
         timeRemaining,
         isRunning: this.timer.isRunning
       })
     } else {
       this.setState({
-        [`${target}Time`]: time,
+        [`${target}Time`]: +time,
         isRunning: this.timer.isRunning
       })
     }
@@ -77,28 +77,26 @@ export default class TimerScreen extends React.Component {
     const timeRemaining = Math.floor(this.state.timeRemaining / 1000)
 
     return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{ ...container, backgroundColor }}>
-          <SettingsButton
-            buttonStyle={{ ...container, backgroundColor }}
-            workTime={workTime}
-            breakTime={breakTime}
-            updateTime={this.updateTime}
-            navigate={this.props.navigation.navigate}
-          />
-          <Countdown
-            style={[center, greyText]}
-            timeRemaining={timeRemaining}
-            totalTime={totalTime}
-            bgColor={backgroundColor}
-            activeTimer={activeTimer}
-          />
-          <View style={[buttonGroup, greyText]}>
-            <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
-            <TimerButton name='ios-repeat' handlePress={this.resetTimer} />
-          </View>
+      <View style={{ ...container, backgroundColor }}>
+        <SettingsButton
+          buttonStyle={{ ...container, backgroundColor }}
+          workTime={workTime}
+          breakTime={breakTime}
+          updateTime={this.updateTime}
+          navigate={this.props.navigation.navigate}
+        />
+        <Countdown
+          style={[center, greyText]}
+          timeRemaining={timeRemaining}
+          totalTime={totalTime}
+          bgColor={backgroundColor}
+          activeTimer={activeTimer}
+        />
+        <View style={[buttonGroup, greyText]}>
+          <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
+          <TimerButton name='ios-repeat' handlePress={this.resetTimer} />
         </View>
-      </TouchableWithoutFeedback>
+      </View>
     )
   }
 }

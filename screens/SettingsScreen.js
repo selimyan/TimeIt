@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, TouchableWithoutFeedback, Keyboard } from 'react-native'
 import { TimeInput } from '../components'
 import { constants } from '../utils'
 
@@ -19,18 +19,20 @@ export default class SettingsScreen extends React.Component {
     const { workTime, breakTime, updateTime, buttonStyle } = this.props.navigation.state.params
 
     return (
-      <View style={[buttonStyle, styles.settings]}>
-        <TimeInput
-          title='Work Time'
-          onChange={updateTime('work')}
-          time={workTime}
-        />
-        <TimeInput
-          title='Break Time'
-          onChange={updateTime('break')}
-          time={breakTime}
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={[buttonStyle, styles.settings]}>
+          <TimeInput
+            title='Work Time'
+            onChange={updateTime('work')}
+            time={workTime}
+          />
+          <TimeInput
+            title='Break Time'
+            onChange={updateTime('break')}
+            time={breakTime}
+          />
+        </View>
+      </TouchableWithoutFeedback>
     )
   }
 }
