@@ -1,20 +1,32 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { TimeInput } from '../components'
+import { constants } from '../utils'
 
 export default class SettingsScreen extends React.Component {
+  static navigationOptions = {
+    headerStyle: {
+      backgroundColor: constants.BLUE,
+      borderWidth: 0,
+    },
+    headerTintColor: '#000',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  }
+
   render() {
-    const { workTime, breakTime, updateTime } = this.props.navigation.state.params
+    const { workTime, breakTime, updateTime, buttonStyle } = this.props.navigation.state.params
 
     return (
-      <View>
+      <View style={[buttonStyle, styles.settings]}>
         <TimeInput
-          title='Work Time:'
+          title='Work Time'
           onChange={updateTime('work')}
           time={workTime}
         />
         <TimeInput
-          title='Break Time:'
+          title='Break Time'
           onChange={updateTime('break')}
           time={breakTime}
         />
@@ -22,3 +34,10 @@ export default class SettingsScreen extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  settings: {
+    alignItems: 'stretch',
+    backgroundColor: constants.BLUE,
+  }
+})

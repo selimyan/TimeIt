@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import { Countdown, TimerToggleButton, TimerButton, SettingsIcon } from '../components'
+import { Countdown, TimerToggleButton, TimerButton, SettingsButton } from '../components'
 import { vibrate, Timer, constants } from '../utils'
 
 const { DEFAULT_BREAK_SECS, DEFAULT_WORK_SECS, WIDTH, NEXT_TIMER, DARK_GREY, BLUE, YELLOW } = constants
@@ -72,14 +72,15 @@ export default class TimerScreen extends React.Component {
     const { workTime, breakTime, isRunning, activeTimer } = this.state
     const { container, center, buttonGroup, greyText } = styles
 
-    const bgColor = activeTimer === 'work' ? BLUE : YELLOW
+    const backgroundColor = activeTimer === 'work' ? BLUE : YELLOW
     const totalTime = activeTimer === 'work' ? workTime : breakTime
     const timeRemaining = Math.floor(this.state.timeRemaining / 1000)
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{ ...container, backgroundColor: bgColor }}>
-          <SettingsIcon
+        <View style={{ ...container, backgroundColor }}>
+          <SettingsButton
+            buttonStyle={{ ...container, backgroundColor }}
             workTime={workTime}
             breakTime={breakTime}
             updateTime={this.updateTime}
@@ -89,7 +90,7 @@ export default class TimerScreen extends React.Component {
             style={[center, greyText]}
             timeRemaining={timeRemaining}
             totalTime={totalTime}
-            bgColor={bgColor}
+            bgColor={backgroundColor}
             activeTimer={activeTimer}
           />
           <View style={[buttonGroup, greyText]}>
