@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import ProgressCircle from 'react-native-progress-circle'
 import PropTypes from 'prop-types'
-import { secToMin } from '../utils'
+import { secToMin, constants } from '../utils'
 
 const Countdown = ({ timeRemaining, totalTime, bgColor, style, activeTimer }) => {
   const percent = 100 - timeRemaining / totalTime * 100
@@ -15,8 +15,8 @@ const Countdown = ({ timeRemaining, totalTime, bgColor, style, activeTimer }) =>
         percent={percent}
         radius={140}
         borderWidth={12}
-        color='#363636'
-        shadowColor='#999DA0'
+        color={constants.DARK_GREY}
+        shadowColor={constants.LIGHT_GREY}
         bgColor={bgColor}
       >
         <View>

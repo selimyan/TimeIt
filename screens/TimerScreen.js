@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, View, Keyboard, TouchableWithoutFeedback, Dimensions } from 'react-native'
-import { Countdown, TimerToggleButton, TimeInput, TimerButton } from '../components'
+import { StyleSheet, View, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Countdown, TimerToggleButton, TimerButton, SettingsIcon } from '../components'
 import { vibrate, Timer, constants } from '../utils'
 
-const { DEFAULT_BREAK_SECS, DEFAULT_WORK_SECS, WIDTH, NEXT_TIMER } = constants
+const { DEFAULT_BREAK_SECS, DEFAULT_WORK_SECS, WIDTH, NEXT_TIMER, DARK_GREY, BLUE, YELLOW } = constants
 
 export default class TimerScreen extends React.Component {
   static navigationOptions = {
@@ -72,29 +72,25 @@ export default class TimerScreen extends React.Component {
     const { workTime, breakTime, isRunning, activeTimer } = this.state
     const { container, center, buttonGroup, greyText } = styles
 
-    const bgColor = activeTimer === 'work' ? '#31cff7' : '#fce205'
+    const bgColor = activeTimer === 'work' ? BLUE : YELLOW
     const totalTime = activeTimer === 'work' ? workTime : breakTime
     const timeRemaining = Math.floor(this.state.timeRemaining / 1000)
 
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{ ...container, backgroundColor: bgColor }}>
+          <SettingsIcon
+            workTime={workTime}
+            breakTime={breakTime}
+            updateTime={this.updateTime}
+            navigate={this.props.navigation.navigate}
+          />
           <Countdown
             style={[center, greyText]}
             timeRemaining={timeRemaining}
             totalTime={totalTime}
             bgColor={bgColor}
             activeTimer={activeTimer}
-          />
-          <TimeInput
-            title='Work Time:'
-            onChange={this.updateTime('work')}
-            time={workTime}
-          />
-          <TimeInput
-            title='Break Time:'
-            onChange={this.updateTime('break')}
-            time={breakTime}
           />
           <View style={[buttonGroup, greyText]}>
             <TimerToggleButton onToggle={this.toggleTimer} isRunning={isRunning} />
@@ -110,13 +106,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    paddingTop: 150,
+    paddingTop: 70,
   },
   center: {
     alignSelf: 'center',
   },
   greyText: {
-    color: '#363636'
+    color: DARK_GREY
   },
   buttonGroup: {
     width: WIDTH,

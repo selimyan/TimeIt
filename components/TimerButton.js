@@ -2,6 +2,7 @@ import React from 'react'
 import { TouchableOpacity, StyleSheet } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import PropTypes from 'prop-types'
+import { constants } from '../utils'
 
 const TimerButton = ({ name, handlePress }) => {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 40,
-    backgroundColor: '#363636'
+    backgroundColor: constants.DARK_GREY,
   }
 })
 
